@@ -1,0 +1,9 @@
+SELECT 
+    MAX(record_date) as record_date,
+    fips,
+    
+    AVG(active_cases) as cases
+FROM raddb.coronavirus_cases_USA_counties
+WHERE record_date > DATE_SUB((select max(record_date) from raddb.coronavirus_cases_USA_counties), INTERVAL 1 MONTH)
+group by fips, WEEK(record_date)
+order by record_date

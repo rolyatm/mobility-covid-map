@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+
+  db:
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    restart: always
+    ports:
+      - 5432:5432
+
+  site:
+    build:
+      context: .
+      dockerfile: site.Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
