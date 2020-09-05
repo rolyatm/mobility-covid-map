@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "postgres",
+            "driver": "PostgreSQL",
+            "name": "mobility-covid-map-db",
+            "password": "er3T*wnw2",
+            "port": 5432,
+            "previewLimit": 50,
+            "server": "0.0.0.0",
+            "username": "postgres"
+        }
+    ]
+}

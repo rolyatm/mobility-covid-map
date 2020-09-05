@@ -10,10 +10,10 @@ services:
     ports:
       - 5432:5432
 
-  site:
+  server:
     build:
       context: .
-      dockerfile: site.Dockerfile
+      dockerfile: server.Dockerfile
     restart: always
     ports:
       - 8080:8080
