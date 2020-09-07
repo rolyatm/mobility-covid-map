@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import ReactTooltip from "react-tooltip";
 import { Container, Box, Typography, Link } from '@material-ui/core';
 import Map from './Map';
-import LayerChoice from './LayerChoice';
+
+//import TimelineChart from './TimelineChart';
 
 function About() {
     return (
@@ -33,20 +34,20 @@ function About() {
           {' to track changes in county level community movements patterns.'}
           <br />
           {'By comparing this data with the rate of COVID-19 cases per 10,000 people we can see how Stay-At-Home orders may affect the community spread of the Coronavirus.'}
-      </Typography>  
+      </Typography>
+      <br />
       </>
     );
   }
 
 export default function App() {
     const [content, setContent] = useState("");
-    const [layer, setLayer] = useState('');
+    
     return (
         <Container>
-            <Box my={4}>
+            <Box my={1}>
               <Header />
-              <LayerChoice setMapLayer={setLayer} />
-              <Map setTooltipContent={setContent} layer={layer}/>
+              <Map setTooltipContent={setContent}/>
               <ReactTooltip>{content}</ReactTooltip>
               <About />
             </Box>

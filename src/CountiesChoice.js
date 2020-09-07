@@ -1,21 +1,39 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-export default function CountiesChoice() {
+const CountiesChoice = ({ setChartCounty }) => {
+    const [value, setValue] = useState(counties[0]);
+    const [inputValue, sentInputValue] = useState('');
+
     return (
-      <Autocomplete
-          id="county-select"
-          options={counties}
-          getOptionLabel={(option) => option.name}
-          style={{ width: 300 }}
-          autoHighlight
-          renderInput={(params) => <TextField {...params} label="Select county" variant="outlined" />}
+        <Autocomplete
+            id="county-select"
+            value={value}
+            options={counties}
+            onChange={(event, newValue) => {
+                setValue(newValue);
+                setChartCounty(newValue);
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+                sentInputValue(newInputValue);
+            }}
+            getOptionLabel={(option) => option.name}
+            style={{ width: 200 }}
+            disableClearable
+            renderInput={(params) => <TextField {...params} label="Select county" variant="outlined" />}
       />
     );
   }
+
+export default CountiesChoice;
 const counties = [
+        {
+            "name": "District of Columbia",
+            "id": "11001"
+        },
         {
             "name": "Mohave",
             "id": "04015"
@@ -89,10 +107,6 @@ const counties = [
             "id": "48471"
         },
         {
-            "name": "Santa Isabel",
-            "id": "72133"
-        },
-        {
             "name": "Aurora",
             "id": "46003"
         },
@@ -101,24 +115,8 @@ const counties = [
             "id": "48047"
         },
         {
-            "name": "Caguas",
-            "id": "72025"
-        },
-        {
-            "name": "Cata\u00c3\u0192\u00c2\u00b1o",
-            "id": "72033"
-        },
-        {
-            "name": "Morovis",
-            "id": "72101"
-        },
-        {
             "name": "Chase",
             "id": "31029"
-        },
-        {
-            "name": "Florida",
-            "id": "72054"
         },
         {
             "name": "Conejos",
@@ -717,10 +715,6 @@ const counties = [
             "id": "39083"
         },
         {
-            "name": "Jayuya",
-            "id": "72073"
-        },
-        {
             "name": "Limestone",
             "id": "48293"
         },
@@ -843,10 +837,6 @@ const counties = [
         {
             "name": "Jack",
             "id": "48237"
-        },
-        {
-            "name": "Aibonito",
-            "id": "72009"
         },
         {
             "name": "Chase",
@@ -1357,14 +1347,6 @@ const counties = [
             "id": "48405"
         },
         {
-            "name": "San Lorenzo",
-            "id": "72129"
-        },
-        {
-            "name": "Vega Alta",
-            "id": "72143"
-        },
-        {
             "name": "Carlton",
             "id": "27017"
         },
@@ -1633,16 +1615,8 @@ const counties = [
             "id": "13131"
         },
         {
-            "name": "Maricao",
-            "id": "72093"
-        },
-        {
             "name": "Pocahontas",
             "id": "54075"
-        },
-        {
-            "name": "Rinc\u00c3\u0192\u00c2\u00b3n",
-            "id": "72117"
         },
         {
             "name": "Otter Tail",
@@ -1687,10 +1661,6 @@ const counties = [
         {
             "name": "Bibb",
             "id": "13021"
-        },
-        {
-            "name": "Cayey",
-            "id": "72035"
         },
         {
             "name": "Midland",
@@ -1923,19 +1893,7 @@ const counties = [
         {
             "name": "Bay",
             "id": "12005"
-        },
-        {
-            "name": "Guaynabo",
-            "id": "72061"
-        },
-        {
-            "name": "Can\u00c3\u0192\u00c2\u00b3vanas",
-            "id": "72029"
-        },
-        {
-            "name": "Corozal",
-            "id": "72047"
-        },
+        }, 
         {
             "name": "King",
             "id": "53033"
@@ -2193,10 +2151,6 @@ const counties = [
             "id": "48247"
         },
         {
-            "name": "Humacao",
-            "id": "72069"
-        },
-        {
             "name": "Menominee",
             "id": "55078"
         },
@@ -2423,10 +2377,6 @@ const counties = [
         {
             "name": "Washington",
             "id": "29221"
-        },
-        {
-            "name": "Arroyo",
-            "id": "72015"
         },
         {
             "name": "Benton",
@@ -2689,10 +2639,6 @@ const counties = [
             "id": "31099"
         },
         {
-            "name": "Barranquitas",
-            "id": "72019"
-        },
-        {
             "name": "Wetzel",
             "id": "54103"
         },
@@ -2717,10 +2663,6 @@ const counties = [
             "id": "27109"
         },
         {
-            "name": "Juncos",
-            "id": "72077"
-        },
-        {
             "name": "Crawford",
             "id": "19047"
         },
@@ -2735,10 +2677,6 @@ const counties = [
         {
             "name": "Sherman",
             "id": "20181"
-        },
-        {
-            "name": "Sabana Grande",
-            "id": "72121"
         },
         {
             "name": "Audubon",
@@ -2865,10 +2803,6 @@ const counties = [
             "id": "18131"
         },
         {
-            "name": "Comer\u00c3\u0192\u00c2\u00ado",
-            "id": "72045"
-        },
-        {
             "name": "Greeley",
             "id": "31077"
         },
@@ -2987,10 +2921,6 @@ const counties = [
         {
             "name": "North Slope",
             "id": "02185"
-        },
-        {
-            "name": "Maunabo",
-            "id": "72095"
         },
         {
             "name": "Huntington",
@@ -3485,20 +3415,12 @@ const counties = [
             "id": "55059"
         },
         {
-            "name": "Juana D\u00c3\u0192\u00c2\u00adaz",
-            "id": "72075"
-        },
-        {
             "name": "Marquette",
             "id": "55077"
         },
         {
             "name": "Price",
             "id": "55099"
-        },
-        {
-            "name": "Lo\u00c3\u0192\u00c2\u00adza",
-            "id": "72087"
         },
         {
             "name": "Shoshone",
@@ -3643,10 +3565,6 @@ const counties = [
         {
             "name": "St. Mary",
             "id": "22101"
-        },
-        {
-            "name": "Cabo Rojo",
-            "id": "72023"
         },
         {
             "name": "Columbia",
@@ -3965,10 +3883,6 @@ const counties = [
             "id": "53021"
         },
         {
-            "name": "Naranjito",
-            "id": "72105"
-        },
-        {
             "name": "Jefferson",
             "id": "40067"
         },
@@ -4215,10 +4129,6 @@ const counties = [
         {
             "name": "Foard",
             "id": "48155"
-        },
-        {
-            "name": "Hormigueros",
-            "id": "72067"
         },
         {
             "name": "Sagadahoc",
@@ -4805,10 +4715,6 @@ const counties = [
             "id": "47155"
         },
         {
-            "name": "Guayama",
-            "id": "72057"
-        },
-        {
             "name": "Eureka",
             "id": "32011"
         },
@@ -5249,10 +5155,6 @@ const counties = [
             "id": "55021"
         },
         {
-            "name": "Vega Baja",
-            "id": "72145"
-        },
-        {
             "name": "Dewey",
             "id": "46041"
         },
@@ -5491,10 +5393,6 @@ const counties = [
         {
             "name": "Clarke",
             "id": "51043"
-        },
-        {
-            "name": "Villalba",
-            "id": "72149"
         },
         {
             "name": "Lafayette",
@@ -6253,14 +6151,6 @@ const counties = [
             "id": "56033"
         },
         {
-            "name": "Toa Baja",
-            "id": "72137"
-        },
-        {
-            "name": "San Germ\u00c3\u0192\u00c2\u00a1n",
-            "id": "72125"
-        },
-        {
             "name": "Pike",
             "id": "42103"
         },
@@ -6291,10 +6181,6 @@ const counties = [
         {
             "name": "Divide",
             "id": "38023"
-        },
-        {
-            "name": "R\u00c3\u0192\u00c2\u00ado Grande",
-            "id": "72119"
         },
         {
             "name": "Colleton",
@@ -6361,10 +6247,6 @@ const counties = [
             "id": "48017"
         },
         {
-            "name": "Ponce",
-            "id": "72113"
-        },
-        {
             "name": "Jackson",
             "id": "40065"
         },
@@ -6411,14 +6293,6 @@ const counties = [
         {
             "name": "Saipan",
             "id": "69110"
-        },
-        {
-            "name": "Lajas",
-            "id": "72079"
-        },
-        {
-            "name": "San Sebasti\u00c3\u0192\u00c2\u00a1n",
-            "id": "72131"
         },
         {
             "name": "Texas",
@@ -6541,16 +6415,8 @@ const counties = [
             "id": "51051"
         },
         {
-            "name": "Utuado",
-            "id": "72141"
-        },
-        {
             "name": "Barron",
             "id": "55005"
-        },
-        {
-            "name": "Aguada",
-            "id": "72003"
         },
         {
             "name": "Pacific",
@@ -6651,10 +6517,6 @@ const counties = [
         {
             "name": "Sharkey",
             "id": "28125"
-        },
-        {
-            "name": "Adjuntas",
-            "id": "72001"
         },
         {
             "name": "Baldwin",
@@ -7297,14 +7159,6 @@ const counties = [
             "id": "12023"
         },
         {
-            "name": "Aguas Buenas",
-            "id": "72007"
-        },
-        {
-            "name": "Orocovis",
-            "id": "72107"
-        },
-        {
             "name": "Ramsey",
             "id": "27123"
         },
@@ -7397,14 +7251,6 @@ const counties = [
             "id": "54039"
         },
         {
-            "name": "Ceiba",
-            "id": "72037"
-        },
-        {
-            "name": "Ciales",
-            "id": "72039"
-        },
-        {
             "name": "Rio Blanco",
             "id": "08103"
         },
@@ -7435,10 +7281,6 @@ const counties = [
         {
             "name": "Sargent",
             "id": "38081"
-        },
-        {
-            "name": "Gu\u00c3\u0192\u00c2\u00a1nica",
-            "id": "72055"
         },
         {
             "name": "Lewis",
@@ -7479,10 +7321,6 @@ const counties = [
         {
             "name": "Kearny",
             "id": "20093"
-        },
-        {
-            "name": "Culebra",
-            "id": "72049"
         },
         {
             "name": "Marion",
@@ -8365,10 +8203,6 @@ const counties = [
             "id": "69120"
         },
         {
-            "name": "Arecibo",
-            "id": "72013"
-        },
-        {
             "name": "Monroe",
             "id": "26115"
         },
@@ -8877,10 +8711,6 @@ const counties = [
             "id": "40115"
         },
         {
-            "name": "Naguabo",
-            "id": "72103"
-        },
-        {
             "name": "Alcona",
             "id": "26001"
         },
@@ -8893,10 +8723,6 @@ const counties = [
             "id": "48113"
         },
         {
-            "name": "Guayanilla",
-            "id": "72059"
-        },
-        {
             "name": "Whitley",
             "id": "18183"
         },
@@ -8907,14 +8733,6 @@ const counties = [
         {
             "name": "Osborne",
             "id": "20141"
-        },
-        {
-            "name": "A\u00c3\u0192\u00c2\u00b1asco",
-            "id": "72011"
-        },
-        {
-            "name": "Mayag\u00c3\u0192\u00c2\u00bcez",
-            "id": "72097"
         },
         {
             "name": "Eastern",
@@ -9185,14 +9003,6 @@ const counties = [
             "id": "36009"
         },
         {
-            "name": "San Juan",
-            "id": "72127"
-        },
-        {
-            "name": "Trujillo Alto",
-            "id": "72139"
-        },
-        {
             "name": "Dallas",
             "id": "19049"
         },
@@ -9425,30 +9235,6 @@ const counties = [
             "id": "54067"
         },
         {
-            "name": "Isabela",
-            "id": "72071"
-        },
-        {
-            "name": "Las Mar\u00c3\u0192\u00c2\u00adas",
-            "id": "72083"
-        },
-        {
-            "name": "Quebradillas",
-            "id": "72115"
-        },
-        {
-            "name": "Lares",
-            "id": "72081"
-        },
-        {
-            "name": "Luquillo",
-            "id": "72089"
-        },
-        {
-            "name": "Pe\u00c3\u0192\u00c2\u00b1uelas",
-            "id": "72111"
-        },
-        {
             "name": "Strafford",
             "id": "33017"
         },
@@ -9539,10 +9325,6 @@ const counties = [
         {
             "name": "Randolph",
             "id": "13243"
-        },
-        {
-            "name": "Las Piedras",
-            "id": "72085"
         },
         {
             "name": "Putnam",
@@ -10213,10 +9995,6 @@ const counties = [
             "id": "48369"
         },
         {
-            "name": "Patillas",
-            "id": "72109"
-        },
-        {
             "name": "Butler",
             "id": "42019"
         },
@@ -10307,10 +10085,6 @@ const counties = [
         {
             "name": "Natchitoches",
             "id": "22069"
-        },
-        {
-            "name": "Barceloneta",
-            "id": "72017"
         },
         {
             "name": "Grant",
@@ -10441,10 +10215,6 @@ const counties = [
             "id": "17197"
         },
         {
-            "name": "Vieques",
-            "id": "72147"
-        },
-        {
             "name": "Raleigh",
             "id": "54081"
         },
@@ -10517,16 +10287,8 @@ const counties = [
             "id": "47145"
         },
         {
-            "name": "Gurabo",
-            "id": "72063"
-        },
-        {
             "name": "Campbell",
             "id": "46021"
-        },
-        {
-            "name": "Yauco",
-            "id": "72153"
         },
         {
             "name": "West Baton Rouge",
@@ -10565,24 +10327,8 @@ const counties = [
             "id": "54097"
         },
         {
-            "name": "Aguadilla",
-            "id": "72005"
-        },
-        {
-            "name": "Carolina",
-            "id": "72031"
-        },
-        {
-            "name": "Hatillo",
-            "id": "72065"
-        },
-        {
             "name": "Waller",
             "id": "48473"
-        },
-        {
-            "name": "Yabucoa",
-            "id": "72151"
         },
         {
             "name": "Spencer",
@@ -10635,14 +10381,6 @@ const counties = [
         {
             "name": "Jackson",
             "id": "12063"
-        },
-        {
-            "name": "Bayam\u00c3\u0192\u00c2\u00b3n",
-            "id": "72021"
-        },
-        {
-            "name": "Cidra",
-            "id": "72041"
         },
         {
             "name": "Lawrence",
@@ -10841,10 +10579,6 @@ const counties = [
             "id": "18017"
         },
         {
-            "name": "Moca",
-            "id": "72099"
-        },
-        {
             "name": "Lincoln",
             "id": "54043"
         },
@@ -10859,10 +10593,6 @@ const counties = [
         {
             "name": "Washington",
             "id": "55131"
-        },
-        {
-            "name": "District of Columbia",
-            "id": "11001"
         },
         {
             "name": "Middlesex",
@@ -11545,10 +11275,6 @@ const counties = [
             "id": "01125"
         },
         {
-            "name": "Toa Alta",
-            "id": "72135"
-        },
-        {
             "name": "Hamblen",
             "id": "47063"
         },
@@ -11627,10 +11353,6 @@ const counties = [
         {
             "name": "Jackson",
             "id": "47087"
-        },
-        {
-            "name": "Manat\u00c3\u0192\u00c2\u00ad",
-            "id": "72091"
         },
         {
             "name": "Braxton",
@@ -12333,10 +12055,6 @@ const counties = [
             "id": "54073"
         },
         {
-            "name": "Camuy",
-            "id": "72027"
-        },
-        {
             "name": "Beaver",
             "id": "40007"
         },
@@ -12541,16 +12259,8 @@ const counties = [
             "id": "51125"
         },
         {
-            "name": "Coamo",
-            "id": "72043"
-        },
-        {
             "name": "Wells",
             "id": "38103"
-        },
-        {
-            "name": "Dorado",
-            "id": "72051"
         },
         {
             "name": "Peoria",
@@ -12737,10 +12447,6 @@ const counties = [
             "id": "13315"
         },
         {
-            "name": "Fajardo",
-            "id": "72053"
-        },
-        {
             "name": "Rhea",
             "id": "47143"
         },
@@ -12883,10 +12589,6 @@ const counties = [
         {
             "name": "Rota",
             "id": "69100"
-        },
-        {
-            "name": "Salinas",
-            "id": "72123"
         },
         {
             "name": "Jackson",

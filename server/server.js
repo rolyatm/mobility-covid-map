@@ -23,16 +23,16 @@ mountRoutes(app);
 
 // add middleware to server react app
 // app.use(express.static(path.join(__dirname, "..", "build")));
-// app.use(express.static("public"));
-
+app.set('appPath', 'build')
+app.use(express.static(__dirname + "/build"));
+app.route('/*')
+    .get(function(req, res) {
+        res.sendfile(app.get('appPath') + '/index.html')
+    })
 // app.use((req, res, next) => {
-//   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+//     // res.send('Hi');
+//     res.sendFile(path.join(__dirname, "build", "index.html"));
 // });
-
-app.use((req, res, next) => {
-    res.send('Hi');
-//   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
-});
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);

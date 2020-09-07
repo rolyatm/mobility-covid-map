@@ -13,6 +13,7 @@ services:
   server:
     environment: 
       - DB_HOST=db
+      - DEV=0
     build:
       context: .
       dockerfile: server.Dockerfile

@@ -8,22 +8,22 @@ const LayerChoice = ({ setMapLayer }) => {
     const [inputValue, sentInputValue] = useState('');
     //setMapLayer(value);
     return (
-      <Autocomplete
-          id="layer-select"
-          value={value}
-          options={layers}
-          onChange={(event, newValue) => {
-              setValue(newValue);
-              setMapLayer(newValue);
-          }}
-          inputValue={inputValue}
-          onInputChange={(event, newInputValue) => {
-              sentInputValue(newInputValue);
-          }}
-          getOptionLabel={(option) => option.name}
-          style={{ width: 300 }}
-          disableClearable
-          renderInput={(params) => <TextField {...params} label="Select a layer" variant="outlined" />}
+        <Autocomplete
+            id="layer-select"
+            value={value}
+            options={layers}
+            onChange={(event, newValue) => {
+                setValue(newValue);
+                setMapLayer(newValue);
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+                sentInputValue(newInputValue);
+            }}
+            getOptionLabel={(option) => option.name}
+            style={{ width: 300 }}
+            disableClearable
+            renderInput={(params) => <TextField {...params} label="Select a layer" variant="outlined" />}
       />
     );
   }
