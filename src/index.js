@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { CssBaseline } from '@material-ui/core';
+
+import './styles.css';
+
 import App from './App';
-    
+
 ReactDOM.render(
-    <React.StrictMode>
+    <React.Fragment>
+        <CssBaseline />
         <App />
-    </React.StrictMode>,
+    </React.Fragment>,
     document.getElementById('root')
 );

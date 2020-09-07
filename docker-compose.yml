@@ -11,6 +11,8 @@ services:
       - 5432:5432
 
   server:
+    environment: 
+      - DB_HOST=db
     build:
       context: .
       dockerfile: server.Dockerfile

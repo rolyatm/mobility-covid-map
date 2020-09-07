@@ -2,7 +2,7 @@ const { Pool } = require('pg')
 
 const pool = new Pool({
   user: 'postgres',
-  host: '0.0.0.0',
+  host: process.env.DB_HOST || '0.0.0.0', //for docker-compose deployment
   database: 'postgres',
   password: 'er3T*wnw2',
   port: 5432,

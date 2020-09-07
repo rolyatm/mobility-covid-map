@@ -1,6 +1,8 @@
 'use strict';
 
 const express = require('express');
+const cors = require('cors');
+const path = require('path');
 const mountRoutes = require('./routes')
 
 // Constants
@@ -9,9 +11,9 @@ const HOST = '0.0.0.0';
 
 // App
 const app = express();
-mountRoutes(app)
+app.use(cors());
+mountRoutes(app);
 // middleware
-// app.use(cors())
 // app.use(helmet())
 // app.use(compression())
 // app.use(express.json())
@@ -27,9 +29,10 @@ mountRoutes(app)
 //   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 // });
 
-// app.use((req, res, next) => {
+app.use((req, res, next) => {
+    res.send('Hi');
 //   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
-// });
+});
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);

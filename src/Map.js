@@ -1,60 +1,154 @@
-import React, { useRef, useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import './Map.css';
-//import counties from './counties-10m.json';
+import React, { memo, useEffect, useState } from 'react';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicmFkLWljYWwiLCJhIjoiY2s5dWNkdWVlMDBkcDNtcnVwODJycHVmZiJ9.jtV0TZAE7ZYW4hHz3r8dQA';
-//mapboxgl.accessToken = 'pk.eyJ1Ijoiam4xNTMyIiwiYSI6ImNpbnBoczBzejEwMXZ1Mm0zbWowdGxtOHgifQ.OioFRlO4Ou3Og3sMBxmfbA'
-const Map = () => {
-    const mapContainerRef = useRef(null);
+import { ZoomableGroup, ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { scaleQuantile } from "d3-scale";
+import { json } from "d3-fetch";
 
-    // const [lng, setLng] = useState(-95);
-    // const [lat, setLat] = useState(40);
-    // const [zoom, setZoom] = useState(2.5);
+const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json";
 
-    useEffect(() => {
-        const map = new mapboxgl.Map({
-            container: mapContainerRef.current,
-            style: 'mapbox://styles/mapbox/light-v10',
-            center: [-95, 40],
-            zoom: 2.5
+function getCountyTimeline(fips) {
+    json(`http://localhost:8080/api/counties/${fips}`)
+        .then(response => {
+            if (response) {
+                return response
+            } else {
+                return []
+            }
         });
+}
 
-        map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-        // map.addSource('counties', {
-        //     "type": "vector",
-        //     "url": "mapbox://mapbox.82pkq93d"
-        // });
-    
-        // map.addLayer({
-        //     "id": "counties",
-        //     "type": "fill",
-        //     "source": "counties",
-        //     "source-layer": "original",
-        //     "paint": {
-        //         "fill-outline-color": "rgba(0,0,0,0.1)",
-        //         "fill-color": "rgba(0,0,0,0.1)"
-        //     }
-        // }, 'place-city-sm'); // Place polygon under these labels.
-        // map.on('load', () => {
-        //     map.addSource('counties')
-        // })
-
-        // map.on('move', () => {
-        //     setLng(map.getCenter().lng.toFixed(4));
-        //     setLat(map.getCenter().lat.toFixed(4));
-        //     setZoom(map.getZoom().toFixed(2));
-        // });
-
-        return () => map.remove();
+const Map = ({ setTooltipContent, layer }) => {
+    const [data, setData] = useState([]);
+    const layerKey = ((layer) ? layer.key : 'cases_per_10k');
+    console.log(layerKey)
+    useEffect(() => {
+        // load data
+        json("http://localhost:8080/api/maps")
+            .then(response => {
+                if (response) {
+                    setData(response)
+                } else {
+                    setData([])
+                }
+            });
     }, []);
 
+    const layerScales = {
+        cases_per_10k: scaleQuantile()
+            .domain(data.map(d => d.cases_per_10k))
+            .range([
+                "#ffedea",
+                "#ffcec5",
+                "#ffad9f",
+                "#ff8a75",
+                "#ff5533",
+                "#e2492d",
+                "#be3d26",
+                "#9a311f",
+                "#782618"
+            ]),
+        deaths_per_10k: scaleQuantile()
+        .domain(data.map(d => d.deaths_per_10k))
+        .range([
+            "#ffedea",
+            "#ffcec5",
+            "#ffad9f",
+            "#ff8a75",
+            "#ff5533",
+            "#e2492d",
+            "#be3d26",
+            "#9a311f",
+            "#782618"
+        ]),
+        residential: scaleQuantile()
+        .domain(data.map(d => d.residential))
+        .range([
+            "#ffedea",
+            "#ffcec5",
+            "#ffad9f",
+            "#ff8a75",
+            "#ff5533",
+            "#e2492d",
+            "#be3d26",
+            "#9a311f",
+            "#782618"
+        ]),
+        workplaces: scaleQuantile()
+        .domain(data.map(d => d.workplaces))
+        .range([
+            "#ffedea",
+            "#ffcec5",
+            "#ffad9f",
+            "#ff8a75",
+            "#ff5533",
+            "#e2492d",
+            "#be3d26",
+            "#9a311f",
+            "#782618"
+        ]),           
+    }
+
     return (
-        <div>
-            <div className='map-container' ref={mapContainerRef}/>
-        </div>
+        <ComposableMap data-tip="" projection="geoAlbersUsa">
+            <ZoomableGroup>
+                <Geographies geography={geoUrl}>
+                    {({ geographies }) =>
+                        geographies.map(geo => {
+                            // TODO data missing some counties - need a more complete source or better handling
+                            const current = data.find(d => d.fips === geo.id);
+                            // join our data sources
+                            geo.properties = Object.assign(geo.properties, current);
+
+                            return (
+                                <Geography
+                                    key={geo.rsmKey}
+                                    geography={geo}
+                                    fill={current ? layerScales[layerKey](geo.properties[layerKey]) : "#EEE"}
+                                    stroke="#E4E5E6"
+                                    strokeWidth={0.5}
+                                    onMouseEnter={() => {
+                                        // get timeline data if we haven't already
+                                        //console.log(geo.properties);
+                                        // if (!('timeline' in geo.properties)) {
+                                        //     const timeline = getCountyTimeline(geo.id);
+                                        //     console.log(timeline)
+                                        //     geo.properties.timeline = timeline;
+                                        // }
+                                        console.log(geo.properties);
+                                        const { state, county } = geo.properties;
+                                        let value = `${Math.round(geo.properties[layerKey])} cases per 10k people`;
+                                        if (!geo.properties[layerKey]) {
+                                            value = 'Not Reported';
+                                        }
+                                        let location = `${county}, ${state}`;
+                                        if (!state || !county) {
+                                            location = `${geo.properties.name} County`; // fall back for no data
+                                        }
+                                        
+                                        setTooltipContent(`${location} — ${value}`);
+                                        }}
+                                        onMouseLeave={() => {
+                                        setTooltipContent("");
+                                        }}
+                                        style={{
+                                            default: {
+                                                outline: '#F53'
+                                            },
+                                            hover: {
+                                                outline: "#F53"
+                                            },
+                                            pressed: {
+                                                outline: "#E42"
+                                            }
+                                        }}
+                                />
+                            );
+                        })
+                    }
+                </Geographies>
+            </ZoomableGroup>
+        </ComposableMap>
     );
 };
 
-export default Map;
+export default memo(Map);
